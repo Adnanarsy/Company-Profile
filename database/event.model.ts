@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import connectDB from "@/lib/mongodb";
-
+import { Schema, model, models, Document } from 'mongoose';
 
 export interface IEvent extends Document {
     title: string;
@@ -117,7 +117,7 @@ EventSchema.pre('save', function (next) {
         event.slug = generateSlug(event.title);
     }
     if (event.isModified('date')) {
-        even.date = normalizeDate(event.date);
+        event.date = normalizeDate(event.date);
     }
     if (event.isModified('time')) {
         event.time = normalizeTime(event.time);
@@ -138,7 +138,7 @@ function generateSlug(title: string): string {
 
 function normalizeDate(dateString: string): string {
     const date = new Date(dateString);
-    if (isNan(date.getTime())){
+    if (isNaN(date.getTime())){
         throw new Error('Invalid date format');
     }
     return date.toISOString().split('T')[0];
